@@ -7,3 +7,7 @@ gulpfile.js
 test.js
 LICENSE.md
 test2.js
+
+.jsbeautifyrc
+.jshintrc
+.travis.yml
