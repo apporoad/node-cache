@@ -10,34 +10,23 @@ npm i lisa.cache.js --save
 
 ## juet do it
 
+现在支持key为任何对象
+
 ```js
 var cache = require('lisa.cache.js');
 
-// now just use the cache
+var keyObj = {
+    a : 'hello'
+}
 
-cache.put('foo', 'bar');
-console.log(cache.get('foo'));
-
-// that wasn't too interesting, here's the good part
-
-cache.put('houdini', 'disappear', 100, function(key, value) {
-    console.log(key + ' did ' + value);
-}); // Time in ms
-
-console.log('Houdini will now ' + cache.get('houdini'));
-
-setTimeout(function() {
-    console.log('Houdini is ' + cache.get('houdini'));
-}, 200);
+cache.put(keyObj, 'great')
 
 
-// create new cache instance
-var newCache = new cache.Cache();
+console.log(cache.get(keyObj))
 
-newCache.put('foo', 'newbaz');
+keyObj.b = 'yes'
+keyObj.a = 'c'
 
-setTimeout(function() {
-  console.log('foo in old cache is ' + cache.get('foo'));
-  console.log('foo in new cache is ' + newCache.get('foo'));
-}, 200);
+console.log(cache.get(keyObj))
+
 ```

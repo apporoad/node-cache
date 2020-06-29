@@ -1,5 +1,40 @@
 'use strict';
 
+var keyArray = []
+
+function getKey(key){
+  if(typeof(key)=='string'){
+    return key
+  }
+  else{
+    for(var i =0 ;i < keyArray.length;i++){
+      if(keyArray[i].value == key){
+        return keyArray[i].key
+      }
+    }
+    var rKey = Date.now().toString()
+    keyArray.unshift({
+      key : rKey,
+      value : key
+    })
+    return rKey
+  }
+}
+function removeKey(key){
+  if(typeof(key) == 'string'){
+    return
+  }
+  var index = -1
+  for(var i =0 ;i < keyArray.length;i++){
+    if(keyArray[i].value == key){
+      index =i
+      break
+    }
+  }
+  if(index>-1)
+    keyArray = keyArray.splice(index,1)
+}
+
 function Cache () {
   var _cache = Object.create(null);
   var _hitCount = 0;
@@ -8,6 +43,7 @@ function Cache () {
   var _debug = false;
 
   this.put = function(key, value, time, timeoutCallback) {
+    key = getKey(key)
     if (_debug) {
       console.log('caching: %s = %j (@%s)', key, value, time);
     }
@@ -45,6 +81,7 @@ function Cache () {
   };
 
   this.del = function(key) {
+    key = getKey(key)
     var canDelete = true;
 
     var oldRecord = _cache[key];
@@ -82,6 +119,7 @@ function Cache () {
   };
 
   this.get = function(key) {
+    key = getKey(key)
     var data = _cache[key];
     if (typeof data != "undefined") {
       if (isNaN(data.expire) || data.expire >= Date.now()) {
@@ -96,6 +134,7 @@ function Cache () {
     } else if (_debug) {
       _missCount++;
     }
+    removeKey(key)
     return null;
   };
 
